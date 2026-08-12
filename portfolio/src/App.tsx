@@ -1,122 +1,117 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
-function App() {
-  const [count, setCount] = useState(0)
+// Página Principal (Home) contendo o seu cartão de perfil e habilidades
+function Home() {
+  const habilidades = [
+    'Python',
+    'Redes',
+    'Linux',
+    'HTML',
+    'CSS3',
+    'Lógica de Programação',
+  ]
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+    <main className="cartao max-w-2xl mx-auto p-6 my-8 bg-white shadow-md rounded-xl">
+      <header className="text-center my-6">
+        <img
+          src="/perfil.jpg"
+          alt="Foto do perfil de Alex Ferreira"
+          className="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow"
+        />
+        <h1 className="text-3xl font-bold">Alex Ferreira</h1>
+        <p className="text-gray-600">Estudante de Segurança Cibernética</p>
+      </header>
+
+      <section className="my-6">
+        <h2 className="text-xl font-semibold mb-2">Sobre mim</h2>
+        <p className="text-gray-700 leading-relaxed">
+          Sou fotógrafo e filmmaker freelancer, estou na TI há 3 anos, focando na
+          área de segurança.
+        </p>
       </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
+      <section className="habilidades my-6">
+        <h2 className="text-xl font-semibold mb-2">Habilidades</h2>
+        <ul className="flex flex-wrap gap-2">
+          {habilidades.map((skill) => (
+            <li
+              key={skill}
+              className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+            >
+              {skill}
             </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
+          ))}
+        </ul>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <section className="contato my-6">
+        <h2 className="text-xl font-semibold mb-2">Contato</h2>
+        <ul className="flex gap-4">
+          <li>
+            <a
+              href="mailto:emaildeestudardealex@gmail.com"
+              className="text-blue-600 hover:underline"
+            >
+              E-mail
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              Linkedin
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              GitHub
+            </a>
+          </li>
+        </ul>
+      </section>
+    </main>
   )
 }
 
-export default App
+// Componentes temporários para as outras rotas (evita erros de importação caso os arquivos em pages/ não existam ainda)
+function AboutPlaceholder() {
+  return <div className="max-w-4xl mx-auto p-6"><h2>Página Sobre</h2></div>
+}
+
+function ProjectsPlaceholder() {
+  return <div className="max-w-4xl mx-auto p-6"><h2>Página Projetos</h2></div>
+}
+
+function ContactPlaceholder() {
+  return <div className="max-w-4xl mx-auto p-6"><h2>Página Contato</h2></div>
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900">
+        <Navbar />
+        <div className="flex-1">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutPlaceholder />} />
+            <Route path="/projects" element={<ProjectsPlaceholder />} />
+            <Route path="/contact" element={<ContactPlaceholder />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
+    </BrowserRouter>
+  )
+}
