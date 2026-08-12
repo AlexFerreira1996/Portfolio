@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import Projects from './pages/Projects' // Importando a nova página real
+import Projects from './pages/Projects'
+import About from './pages/About' // Página real importada
 
 function Home() {
   const habilidades = [
@@ -84,10 +85,6 @@ function Home() {
   )
 }
 
-function AboutPlaceholder() {
-  return <div className="max-w-4xl mx-auto p-6"><h2>Página Sobre</h2></div>
-}
-
 function ContactPlaceholder() {
   return <div className="max-w-4xl mx-auto p-6"><h2>Página Contato</h2></div>
 }
@@ -100,7 +97,7 @@ export default function App() {
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<AboutPlaceholder />} />
+            <Route path="/about" element={<About />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<ContactPlaceholder />} />
           </Routes>
