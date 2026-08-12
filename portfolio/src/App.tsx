@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import Projects from './pages/Projects' // Importando a nova página real
 
-// Página Principal (Home) contendo o seu cartão de perfil e habilidades
 function Home() {
   const habilidades = [
     'Python',
@@ -84,13 +84,8 @@ function Home() {
   )
 }
 
-// Componentes temporários para as outras rotas (evita erros de importação caso os arquivos em pages/ não existam ainda)
 function AboutPlaceholder() {
   return <div className="max-w-4xl mx-auto p-6"><h2>Página Sobre</h2></div>
-}
-
-function ProjectsPlaceholder() {
-  return <div className="max-w-4xl mx-auto p-6"><h2>Página Projetos</h2></div>
 }
 
 function ContactPlaceholder() {
@@ -106,7 +101,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<AboutPlaceholder />} />
-            <Route path="/projects" element={<ProjectsPlaceholder />} />
+            <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<ContactPlaceholder />} />
           </Routes>
         </div>
