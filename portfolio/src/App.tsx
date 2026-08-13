@@ -62,7 +62,7 @@ function Home() {
           </li>
           <li>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/alex-de-oliveira-ferreira-125b3b365"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline"
@@ -72,7 +72,7 @@ function Home() {
           </li>
           <li>
             <a
-              href="https://github.com"
+              href="https://github.com/AlexFerreira1996?tab=repositories"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline"
