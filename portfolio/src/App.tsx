@@ -18,7 +18,7 @@ function Home() {
     <main className="cartao max-w-2xl mx-auto p-6 my-8 bg-white shadow-md rounded-xl">
       <header className="text-center my-6">
         <img
-          src="/perfil.jpg"
+          src="./perfil.jpg" // Adicionado o ponto (.) antes da barra
           alt="Foto do perfil de Alex Ferreira"
           className="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow"
         />
@@ -91,7 +91,8 @@ function ContactPlaceholder() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    // Adicionado o basename="/Portfolio" aqui abaixo 👇
+    <BrowserRouter basename="/Portfolio">
       <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900">
         <Navbar />
         <div className="flex-1">
@@ -100,6 +101,8 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<ContactPlaceholder />} />
+            {/* Rota Coringa adicionada aqui abaixo 👇 */}
+            <Route path="*" element={<Home />} />
           </Routes>
         </div>
         <Footer />
