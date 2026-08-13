@@ -12,7 +12,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
       <div className="container flex h-16 max-w-4xl items-center justify-between px-4 mx-auto">
         <NavLink to="/" className="font-bold text-lg hover:opacity-80 transition">
-          Alex<span className="text-blue-600">.dev</span>
+          Alex<span className="text-blue-600">Ferreira</span>
         </NavLink>
 
         <nav className="flex gap-6">

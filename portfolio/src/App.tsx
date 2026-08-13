@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Projects from './pages/Projects'
-import About from './pages/About' // Página real importada
+import About from './pages/About'
+import Contact from './pages/Contact'
 
 function Home() {
   const habilidades = [
@@ -85,13 +86,8 @@ function Home() {
   )
 }
 
-function ContactPlaceholder() {
-  return <div className="max-w-4xl mx-auto p-6"><h2>Página Contato</h2></div>
-}
-
 export default function App() {
   return (
-    // Adicionado o basename="/Portfolio" aqui abaixo 👇
     <BrowserRouter basename="/Portfolio">
       <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900">
         <Navbar />
@@ -100,8 +96,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/projects" element={<Projects />} />
-            <Route path="/contact" element={<ContactPlaceholder />} />
-            {/* Rota Coringa adicionada aqui abaixo 👇 */}
+            <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<Home />} />
           </Routes>
         </div>
