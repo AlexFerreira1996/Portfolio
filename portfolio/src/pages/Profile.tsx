@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 interface ProfileData {
+  id: string
+  username: string
   full_name: string
   headline: string
   about: string
@@ -17,105 +19,128 @@ export default function Profile() {
   const { username } = useParams<{ username: string }>()
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [notFound, setNotFound] = useState(false)
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchProfile()
+    checkUserAndFetchProfile()
   }, [username])
 
-  const fetchProfile = async () => {
+  const checkUserAndFetchProfile = async () => {
     try {
       setLoading(true)
+
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        setCurrentUserId(user.id)
+      }
+
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('username', username?.toLowerCase())
+        .eq('username', username?.toLowerCase().trim())
         .single()
 
-      if (error || !data) {
-        setNotFound(true)
-      } else {
-        setProfile(data)
-      }
-    } catch (err) {
-      setNotFound(true)
+      if (error) throw error
+      setProfile(data)
+    } catch (err: any) {
+      console.error('Erro ao buscar perfil:', err.message)
     } finally {
       setLoading(false)
     }
   }
 
   if (loading) {
-    return <div className="text-center my-20 text-gray-500">Carregando portfólio...</div>
+    return <div className="text-center my-12 text-gray-600">Carregando perfil...</div>
   }
 
-  if (notFound || !profile) {
-    return (
-      <div className="text-center my-20">
-        <h2 className="text-2xl font-bold text-gray-800">Usuário não encontrado 🔍</h2>
-        <p className="text-gray-600 mt-2">O perfil /u/{username} não existe ou foi removido.</p>
-        <Link to="/" className="inline-block mt-4 text-blue-600 hover:underline">Voltar ao início</Link>
-      </div>
-    )
+  if (!profile) {
+    return <div className="text-center my-12 text-red-600 font-semibold">Perfil não encontrado.</div>
   }
+
+  const isOwner = currentUserId === profile.id
 
   return (
-    <main className="max-w-3xl mx-auto my-10 p-8 bg-white rounded-2xl shadow-lg border border-gray-100">
-      <div className="flex flex-col sm:flex-row items-center gap-6 pb-8 border-b">
+    <main className="max-w-2xl mx-auto my-8 p-6 bg-white rounded-xl shadow-md border relative">
+      {isOwner && (
+        <div className="flex justify-end mb-4">
+          <Link
+            to="/dashboard"
+            className="px-3 py-1.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition"
+          >
+            Editar Perfil
+          </Link>
+        </div>
+      )}
+
+      <div className="flex items-center gap-6 pb-6 border-b">
         {profile.avatar_url ? (
           <img
             src={profile.avatar_url}
             alt={profile.full_name}
-            className="w-28 h-28 rounded-full object-cover border-4 border-blue-500 shadow"
+            className="w-20 h-20 rounded-full object-cover border-2 border-blue-500"
           />
         ) : (
-          <div className="w-28 h-28 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl font-bold border-4 border-blue-500">
-            {profile.full_name?.charAt(0) || 'U'}
+          <div className="w-20 h-20 rounded-full bg-blue-100 border-2 border-blue-500 flex items-center justify-center text-2xl font-bold text-blue-600">
+            {profile.full_name ? profile.full_name.charAt(0).toUpperCase() : 'U'}
           </div>
         )}
 
-        <div className="text-center sm:text-left">
-          <h1 className="text-3xl font-extrabold text-gray-900">{profile.full_name}</h1>
-          <p className="text-lg text-blue-600 font-medium mt-1">{profile.headline}</p>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">{profile.full_name}</h1>
+          {profile.headline && <p className="text-blue-600 font-medium">{profile.headline}</p>}
         </div>
       </div>
 
       {profile.about && (
-        <section className="py-6 border-b">
-          <h2 className="text-lg font-bold text-gray-800 mb-2">Sobre</h2>
-          <p className="text-gray-600 whitespace-pre-line leading-relaxed">{profile.about}</p>
-        </section>
+        <div className="py-6 border-b">
+          <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-2">Sobre</h2>
+          <p className="text-gray-600 whitespace-pre-line">{profile.about}</p>
+        </div>
       )}
 
       {profile.skills && profile.skills.length > 0 && (
-        <section className="py-6 border-b">
-          <h2 className="text-lg font-bold text-gray-800 mb-3">Habilidades</h2>
+        <div className="py-6 border-b">
+          <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Habilidades</h2>
           <div className="flex flex-wrap gap-2">
             {profile.skills.map((skill, index) => (
-              <span key={index} className="px-3 py-1 bg-blue-50 text-blue-700 text-sm font-semibold rounded-full border border-blue-200">
+              <span
+                key={index}
+                className="px-3 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full border border-blue-100"
+              >
                 {skill}
               </span>
             ))}
           </div>
-        </section>
+        </div>
       )}
 
-      <section className="pt-6 flex flex-wrap gap-4">
+      <div className="pt-6 flex flex-wrap gap-3">
         {profile.email && (
-          <a href={`mailto:${profile.email}`} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
-            ✉️ {profile.email}
+          <span className="px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-md flex items-center gap-1">
+             {profile.email}
+          </span>
+        )}
+        {profile.linkedin && (
+          <a
+            href={profile.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-md hover:bg-blue-100 transition"
+          >
+            LinkedIn 
           </a>
         )}
         {profile.github && (
-          <a href={profile.github} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 transition">
-            GitHub
+          <a
+            href={profile.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 bg-gray-800 text-white text-xs font-medium rounded-md hover:bg-gray-900 transition"
+          >
+            GitHub 
           </a>
         )}
-        {profile.linkedin && (
-          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition">
-            LinkedIn
-          </a>
-        )}
-      </section>
+      </div>
     </main>
   )
 }

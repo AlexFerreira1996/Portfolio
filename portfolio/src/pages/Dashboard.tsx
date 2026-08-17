@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 export default function Dashboard() {
@@ -97,6 +97,7 @@ export default function Dashboard() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Usuário não autenticado.')
 
+      const cleanUsername = username.toLowerCase().trim()
       const skillsArray = skills.split(',').map(s => s.trim()).filter(Boolean)
 
       const updates = {
@@ -138,14 +139,12 @@ export default function Dashboard() {
         <h1 className="text-2xl font-bold text-gray-800">Painel do Perfil</h1>
         <div className="flex gap-2">
           {username && (
-            <a
-              href={`/u/${username}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to={`/u/${username}`}
               className="px-3 py-1.5 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition"
             >
-              Ver Meu Perfil 🔗
-            </a>
+              Ver Meu Perfil
+            </Link>
           )}
           <button
             onClick={handleLogout}
