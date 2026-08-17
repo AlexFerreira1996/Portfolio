@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Projects from './pages/Projects'
-import About from './pages/About' // Página real importada
+import About from './pages/About'
+import Contact from './pages/Contact'
 
 function Home() {
   const habilidades = [
@@ -18,7 +19,7 @@ function Home() {
     <main className="cartao max-w-2xl mx-auto p-6 my-8 bg-white shadow-md rounded-xl">
       <header className="text-center my-6">
         <img
-          src="/perfil.jpg"
+          src="./perfil.jpg" // Adicionado o ponto (.) antes da barra
           alt="Foto do perfil de Alex Ferreira"
           className="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow"
         />
@@ -61,7 +62,7 @@ function Home() {
           </li>
           <li>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/alex-de-oliveira-ferreira-125b3b365"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline"
@@ -71,7 +72,7 @@ function Home() {
           </li>
           <li>
             <a
-              href="https://github.com"
+              href="https://github.com/AlexFerreira1996?tab=repositories"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline"
@@ -85,13 +86,9 @@ function Home() {
   )
 }
 
-function ContactPlaceholder() {
-  return <div className="max-w-4xl mx-auto p-6"><h2>Página Contato</h2></div>
-}
-
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Portfolio">
       <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900">
         <Navbar />
         <div className="flex-1">
@@ -99,7 +96,8 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/projects" element={<Projects />} />
-            <Route path="/contact" element={<ContactPlaceholder />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<Home />} />
           </Routes>
         </div>
         <Footer />
