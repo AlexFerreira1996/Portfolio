@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from './lib/supabase'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
@@ -8,6 +8,7 @@ import Profile from './pages/Profile'
 function Navbar() {
   const [session, setSession] = useState<any>(null)
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -25,6 +26,8 @@ function Navbar() {
     await supabase.auth.signOut()
     navigate('/login')
   }
+
+  const isLoginPage = location.pathname === '/login' || location.pathname === '/'
 
   return (
     <header className="p-4 bg-white border-b flex justify-between items-center">
@@ -45,9 +48,11 @@ function Navbar() {
             </button>
           </>
         ) : (
-          <Link to="/login" className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-            Login
-          </Link>
+          !isLoginPage && (
+            <Link to="/login" className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              Login
+            </Link>
+          )
         )}
       </div>
     </header>
